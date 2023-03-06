@@ -2,6 +2,11 @@ const { User } = require('../models');
 const { createToken } = require('../auth/auth');
 const validateUserFields = require('./validations/validateUserFields');
 
+const getAllUsers = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return { type: 200, result: users };
+};
+
 const getUserByEmail = async (email) => User.findOne({ where: { email } });
 
 const createUser = async (user) => {
@@ -23,4 +28,5 @@ const createUser = async (user) => {
 module.exports = {
   getUserByEmail,
   createUser,
+  getAllUsers,
 };
