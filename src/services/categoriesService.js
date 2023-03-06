@@ -1,6 +1,11 @@
 const { Category } = require('../models');
 const validateCategoryFields = require('./validations/validateCategoryFields');
 
+const getAllCategories = async () => {
+  const categories = await Category.findAll();
+  return { type: 200, result: categories };
+};
+
 const createCategory = async (category) => {
   const error = validateCategoryFields(category);
   if (error.result) return error;
@@ -12,5 +17,6 @@ const createCategory = async (category) => {
 };
 
 module.exports = {
+  getAllCategories,
   createCategory,
 };
