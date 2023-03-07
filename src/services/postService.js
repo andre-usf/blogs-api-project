@@ -3,6 +3,8 @@ const { BlogPost, User, Category, PostCategory } = require('../models');
 const config = require('../config/config');
 const validatePostFields = require('./validations/validatePostFields');
 
+const { Op } = Sequelize;
+
 const env = process.env.NODE_ENV || 'development';
 
 const sequelize = new Sequelize(config[env]);
@@ -29,6 +31,19 @@ const getPostById = async (id) => {
   if (!post) return { type: 404, result: { message: 'Post does not exist' } };
 
   return { type: 200, result: post };
+};
+
+const getPostBySearch = async (search) => {
+  const posts = await BlogPost
+  .findAll({ 
+    where: { [Op.or]: [
+    { title: { [Op.like]: `%${search}%` } }, { content: { [Op.like]: `%${search}%` } },
+  ] },
+    include: [
+    { model: User, as: 'user', attributes: { exclude: ['password'] } },
+    { model: Category, as: 'categories', through: { attributes: [] } },
+  ] });
+  return { type: 200, result: posts };
 };
 
 const validateCategoryIds = async (categoryIds) => {
@@ -103,6 +118,7 @@ const deletePost = async ({ userToken, params }) => {
 module.exports = {
   getAllPosts,
   getPostById,
+  getPostBySearch,
   createPost,
   updatePost,
   deletePost,
