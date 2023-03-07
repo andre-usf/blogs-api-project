@@ -8,7 +8,7 @@ const getAllCategories = async () => {
 
 const createCategory = async (category) => {
   const error = validateCategoryFields(category);
-  if (error.result) return error;
+  if (error.type) return error;
 
   const { name } = category;
   const { id } = await Category.create(name);

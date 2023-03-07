@@ -19,7 +19,7 @@ const getUserByEmail = async (email) => User.findOne({ where: { email } });
 
 const createUser = async (user) => {
   const error = validateUserFields(user);
-  if (error.result) return error;
+  if (error.type) return error;
   
   const verifyUser = await getUserByEmail(user.email);
   if (verifyUser) return { type: 409, result: { message: 'User already registered' } };

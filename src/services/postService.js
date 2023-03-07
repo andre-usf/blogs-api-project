@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const { BlogPost, User, Category, PostCategory } = require('../models');
 const config = require('../config/config');
+const validatePostFields = require('./validations/validatePostFields');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -30,17 +31,6 @@ const getPostById = async (id) => {
   return { type: 200, result: post };
 };
 
-const validatePostFields = (post) => {
-  const arrayValues = Object.values(post);
-  const someValuesEmpty = arrayValues.some((value) => !value);
-  
-  if (someValuesEmpty) {
-   return { type: 400, result: { message: 'Some required fields are missing' } };
-  }
-
-  return { type: 201, result: null };
-};
-
 const validateCategoryIds = async (categoryIds) => {
   const { count } = await Category.findAndCountAll({ where: { id: categoryIds } });
   
@@ -48,18 +38,19 @@ const validateCategoryIds = async (categoryIds) => {
     return { type: 400, result: { message: 'one or more "categoryIds" not found' } };
   }
 
-  return { type: 201, result: null };
+  return { type: null, result: '' };
 };
 
 const createPost = async ({ body, userToken }) => {
   const { title, content, categoryIds } = body;
-  const { id: userId } = userToken.payload.dataValues;
-
+  
+  const { id: userId } = userToken.dataValues;
+  
   const errorPostFields = validatePostFields(body);
-  if (errorPostFields.result) return errorPostFields;
+  if (errorPostFields.type) return errorPostFields;
 
   const errorCategoryIds = await validateCategoryIds(categoryIds);
-  if (errorCategoryIds.result) return errorCategoryIds;
+  if (errorCategoryIds.type) return errorCategoryIds;
 
   const transactionResult = await sequelize.transaction(async (transaction) => {
     const createdPost = await BlogPost
@@ -75,8 +66,28 @@ const createPost = async ({ body, userToken }) => {
   return { type: 201, result: transactionResult };
 };
 
+const updatePost = async ({ body, userToken, params }) => {
+  const { id: userId } = userToken;
+  
+  const errorPostFields = validatePostFields(body);
+  if (errorPostFields.type) return errorPostFields;
+
+  const { result: { userId: postUserId } } = await getPostById(params.id);
+
+  if (userId !== postUserId) return { type: 401, result: { message: 'Unauthorized user' } };
+
+  const { title, content } = body;
+  await BlogPost.update({ title, content }, { where: { id: params.id } });
+  
+  const updatedPost = await getPostById(params.id);
+  console.log(updatedPost);
+
+  return { type: 200, result: updatedPost.result };
+};
+
 module.exports = {
   getAllPosts,
   getPostById,
   createPost,
+  updatePost,
 };
