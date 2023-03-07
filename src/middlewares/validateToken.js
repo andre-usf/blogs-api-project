@@ -8,7 +8,8 @@ const validateToken = (req, res, next) => {
   try {
     const payloadToken = verifyToken(authorization);
     
-    req.userToken = payloadToken;
+    req.userToken = payloadToken.payload;
+
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Expired or invalid token', error });
