@@ -67,7 +67,7 @@ const createPost = async ({ body, userToken }) => {
 };
 
 const updatePost = async ({ body, userToken, params }) => {
-  const { id: userId } = userToken;
+  const { id: userId } = userToken.dataValues;
   
   const errorPostFields = validatePostFields(body);
   if (errorPostFields.type) return errorPostFields;
