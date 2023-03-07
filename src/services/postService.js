@@ -44,7 +44,7 @@ const validateCategoryIds = async (categoryIds) => {
 const createPost = async ({ body, userToken }) => {
   const { title, content, categoryIds } = body;
   
-  const { id: userId } = userToken.dataValues;
+  const { id: userId } = userToken;
   
   const errorPostFields = validatePostFields(body);
   if (errorPostFields.type) return errorPostFields;
@@ -67,7 +67,7 @@ const createPost = async ({ body, userToken }) => {
 };
 
 const updatePost = async ({ body, userToken, params }) => {
-  const { id: userId } = userToken.dataValues;
+  const { id: userId } = userToken;
   
   const errorPostFields = validatePostFields(body);
   if (errorPostFields.type) return errorPostFields;
