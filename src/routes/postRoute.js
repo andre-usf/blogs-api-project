@@ -4,6 +4,7 @@ const {
   getPostById, 
   createPost, 
   updatePost,
+  deletePost,
 } = require('../controllers/postController');
 const validateToken = require('../middlewares/validateToken');
 
@@ -13,5 +14,6 @@ router.get('/', validateToken, getAllPosts);
 router.get('/:id', validateToken, getPostById);
 router.post('/', validateToken, createPost);
 router.put('/:id', validateToken, updatePost);
+router.delete('/:id', validateToken, deletePost);
 
 module.exports = router;

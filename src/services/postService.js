@@ -80,9 +80,24 @@ const updatePost = async ({ body, userToken, params }) => {
   await BlogPost.update({ title, content }, { where: { id: params.id } });
   
   const updatedPost = await getPostById(params.id);
-  console.log(updatedPost);
 
   return { type: 200, result: updatedPost.result };
+};
+
+const deletePost = async ({ userToken, params }) => {
+  const { id: userId } = userToken;
+  
+  const response = await getPostById(params.id);
+
+  if (response.type === 404) return { type: response.type, result: response.result };
+  
+  if (userId !== response.result.userId) {
+    return { type: 401, result: { message: 'Unauthorized user' } };
+  }
+
+  await BlogPost.destroy({ where: { id: params.id } });
+
+  return { type: 204, result: '' };
 };
 
 module.exports = {
@@ -90,4 +105,5 @@ module.exports = {
   getPostById,
   createPost,
   updatePost,
+  deletePost,
 };
