@@ -6,7 +6,7 @@ const validateCategoryFields = (category) => {
   
   if (error) return { type: 400, result: handleErrorMessage(error) };
   
-  return { type: 201, result: null };
+  return { type: null, result: '' };
 };
 
 module.exports = validateCategoryFields;

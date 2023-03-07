@@ -6,7 +6,7 @@ const validateUserFields = (user) => {
   
   if (error) return { type: 400, result: handleErrorMessage(error) };
   
-  return { type: 200, result: null };
+  return { type: null, result: '' };
 };
 
 module.exports = validateUserFields;
