@@ -8,6 +8,7 @@ const getAllUsers = async (_req, res) => {
 const getUserById = async (req, res) => {
   const { id } = req.params;
   const response = await userService.getUserById(id);
+  
   return res.status(response.type).json(response.result);
 };
 

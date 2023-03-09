@@ -8,12 +8,14 @@ const getAllPosts = async (_req, res) => {
 const getPostById = async (req, res) => {
   const { id } = req.params;
   const response = await postService.getPostById(id);
+  
   return res.status(response.type).json(response.result);
 };
 
 const getPostsBySearch = async (req, res) => {
   const { q } = req.query;
   const { type, result } = await postService.getPostBySearch(q);
+  
   return res.status(type).json(result);
 };
 
