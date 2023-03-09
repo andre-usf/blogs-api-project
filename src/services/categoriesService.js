@@ -18,7 +18,7 @@ const createCategory = async (category) => {
     if (error.type) return error;
 
     const { name } = category;
-    const { id } = await Category.create(name);
+    const { id } = await Category.create({ name });
     
     return { type: 201, result: { id, name } };
   } catch (error) {
