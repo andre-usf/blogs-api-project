@@ -22,7 +22,7 @@ O projeto foi desenvolvido durante o módulo de back-end na [Trybe](https://www.
 - Validações de campos de posts, usuários e categorias utilizando a biblioteca Joi;
 - Utilização do JSON Web Token para geração de token ao efetuar login;
 - Middleware para a autenticação do token do usuário para permitir acesso às rotas;
-- Conexão e gerenciamento do bando de dados com o Sequelize ORM e MySQL.
+- Conexão e gerenciamento do banco de dados com Sequelize ORM e MySQL.
 
 
 ## Instalação com Docker:
