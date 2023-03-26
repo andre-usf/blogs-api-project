@@ -18,7 +18,7 @@ O projeto foi desenvolvido durante o módulo de back-end na [Trybe](https://www.
 
 - Utilização do Docker para criar o ambiente de desenvolvimento;
 - Criação de endpoints utilizando o framework Express.JS e a aplicação do padrão REST;
-- Aplicação da arquitetura em camadas MSC (model, service e controller);
+- Aplicação da arquitetura em camadas - model, service e controller;
 - Validações de campos de posts, usuários e categorias utilizando a biblioteca Joi;
 - Utilização do JSON Web Token para geração de token ao efetuar login;
 - Middleware para a autenticação do token do usuário para permitir acesso às rotas;
